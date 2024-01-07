@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>État de Stock</title>
+  </head>
+  <body>
+    <h1>État de Stock</h1>
+
+    <form method="get">
+      <input type="text" name="fournisseur" placeholder="Fournisseur" />
+      <input type="text" name="date_achat" placeholder="Date d'achat" />
+      <input type="text" name="nom_matiere" placeholder="Nom de matière" />
+      <button type="submit">Filtrer</button>
+    </form>
+
+    <p>Valeur totale du stock: {{ valeur_totale_stock }}</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Code Produit</th>
+          <th>Désignation</th>
+          <th>Prix unitaire</th>
+          <th>Quantité</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for produit in produits %}
+        <tr>
+          <td>{{ produit.CodeP }}</td>
+          <td>{{ produit.Designation }}</td>
+          <td>{{ produit.prix_unitaire }}</td>
+          <td>{{ produit.Quantite }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

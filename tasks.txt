@@ -1,0 +1,55 @@
+L'achat de matières: 
+                        saisir fornisseur /creer new one if not exist
+                        aficher list produits par recherche 
+                        Le montant total d’achat HT sera calculé et affiché (le prix unitaire HT * Qte)
+                        on peut paye par des partie 
+                        on peut consulter les achats
+
+
+
+Le transfert de matières: 
+                                Opération de transfert : L'agent responsable du stock saisit une opération de transfert dans le système. Pour cela, il doit spécifier :
+
+                                    Date : La date à laquelle le transfert est effectué.
+
+                                    Centre de production : Sélectionner le centre vers lequel les produits sont transférés 
+                                    parmi les trois centres disponibles.
+
+                                    Produit et quantité : Choisir le produit à transférer et spécifier la quantité à déplacer.
+
+
+                                Calcul du coût de transfert : Lorsque les produits sont déplacés, le coût du transfert équivalent est automatiquement calculé par le système. Ce coût est dérivé du prix unitaire d'achat du produit multiplié par la quantité transférée. Par exemple,si un produit a été acheté à un certain prix unitaire et qu'une quantité de ce produit est transférée, le coût du transfert sera calculé en fonction de ces données.
+
+                                Journal des transferts : Le système permet également de consulter un journal des transferts enregistrés. Cela offre à l'agent la possibilité de visualiser les opérations passées, les quantités transférées, les centres de destination, etc. De plus, il peut appliquer différents filtres pour afficher des informations spécifiques, comme les transferts pour un produit particulier, sur une période donnée, ou vers un centre spécifique.
+
+
+
+
+
+### Routes principales :
+
+- `/magasin/`: Gestion du magasin
+  - `/stocks/`: Gestion des stocks
+  - `/fournisseurs/`: Gestion des fournisseurs
+  - `/achats/`: Enregistrement des achats de matières premières
+  - `/transferts/`: Gestion des transferts de matières
+  - `/ventes/`: Gestion des ventes de matières
+
+- `/centres/`: Gestion des centres de production
+  - `/centre1/`, `/centre2/`, `/centre3/`: Sections pour chaque centre
+    - `/ventes/`: Enregistrement des ventes du centre
+    - `/employes/`: Gestion des employés du centre
+    - `/pointage/`: Système de pointage pour les employés
+    - `/massrouf/`: Gestion des avances sur salaire
+
+- `/analyse/`: Tableaux de bord et rapports
+  - `/analyse_achats/`: Analyse des achats
+  - `/analyse_ventes/`: Analyse des ventes
+
+### Autres routes possibles :
+
+- `/clients/`: Gestion des clients
+- `/employes/`: Gestion des employés
+- `/login/`, `/logout/`, `/signup/`: Authentification et gestion des utilisateurs
+
+Cette structure de routes divise le projet en différentes parties fonctionnelles, permettant une navigation claire et logique dans l'application. Bien sûr, cela peut être adapté en fonction de la complexité et des besoins spécifiques de votre projet.

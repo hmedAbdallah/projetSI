@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      // Récupérer la liste des produits
+      axios
+        .get("/api/produits")
+        .then((response) => {
+          const produits = response.data;
+
+          // Créer une liste pour afficher les noms de produits
+          const listeProduits = document.createElement("ul");
+          // filtrer les produits recherche
+          const inputProduit = document.getElementById("input-produit");
+          const containerProduits = document.getElementById("chk");
+          function rechercherProduits(termeRecherche) {
+            if (termeRecherche != "") {
+              var produitsFiltres = produits.filter((p) =>
+                p.Designation.toLowerCase().includes(
+                  termeRecherche.toLowerCase()
+                )
+              );
+            }
+            const checkboxElements =
+              document.querySelectorAll(".checkbox-produit");
+            checkboxElements.forEach((element) => element.remove());
+
+            // Ajouter les nouvelles cases à cocher
+            produitsFiltres.forEach((produit) => {
+              const checkbox = document.createElement("input");
+              checkbox.type = "checkbox";
+              checkbox.value = produit.CodeP;
+              checkbox.name = "produit_nom";
+              checkbox.classList.add("checkbox-produit");
+              const label = document.createElement("label");
+              label.classList.add("checkbox-produit");
+              label.htmlFor = produit.CodeP;
+              label.textContent = produit.Designation;
+              containerProduits.appendChild(checkbox);
+              containerProduits.appendChild(label);
+            });
+          }
+          inputProduit.addEventListener("input", () => {
+            const termeRecherche = inputProduit.value;
+            rechercherProduits(termeRecherche);
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    </script>
+    <title>Achat de Matières</title>
+  </head>
+  <body>
+    <h1>Achat de Matières</h1>
+    <form method="post">
+      {% csrf_token %}
+      <label for="fournisseur">Fournisseur :</label>
+      <select id="fournisseur" name="fournisseur_nom">
+        {% for fournisseur in fournisseurs %}
+        <option value="{{ fournisseur.CodeF }}">{{ fournisseur.NomF }}</option>
+        {% endfor %}
+      </select>
+      <button>
+        <a href="{%url 'ajoutfrn'%}">ajouter nouvelle fournisseur</a>
+      </button>
+      <br /><br />
+
+      <label for="produit">Produit :</label>
+      <input type="text" placeholder="rechercher produit" id="input-produit" />
+      <div id="chk"></div>
+      {% for produit in produits %}
+      <option value="{{ produit.CodeP }}">{{ produit.Designation }}</option>
+      {% endfor %}<br /><br />
+
+      <label for="quantite">Quantité :</label>
+      <input type="number" id="quantite" name="quantite" required /><br /><br />
+
+      <label for="prix_unitaire">Prix unitaire HT :</label>
+      <input
+        type="number"
+        id="prix_unitaire"
+        name="prix_unitaire"
+        step="0.01"
+        required
+      /><br /><br />
+      <p id="prds"></p>
+      <input type="submit" value="Valider l'achat" />
+    </form>
+  </body>
+</html>
