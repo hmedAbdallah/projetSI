@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from datetime import date
 from .serializers import ProduitSerializer
 from rest_framework import viewsets
-from .forms import FournisseurForm
-from .models import Produit, Achats
+from .forms import FournisseurForm,TransfertMatieresForm
+from .models import Fournisseur, Produit, Achats
 
 def etat_stock(request):
     # Filtrer les produits en fonction des achats
@@ -37,31 +37,32 @@ def etat_stock(request):
         'valeur_totale_stock': valeur_totale_stock
     })
 
-from django.shortcuts import render, redirect
-from .models import Produit, Fournisseur, Achats
+
 
 def achat_matiere(request):
     fournisseurs = Fournisseur.objects.all()
     produits = Produit.objects.all()
 
     if request.method == 'POST':
-        fournisseur = fournisseurs.get(CodeF=request.POST.get('fournisseur_nom'))
-        produit = produits.get(CodeP=request.POST.get('produit_nom'))
+        fournisseur = fournisseurs.get(Code=request.POST.get('fournisseur_nom'))
+        produit = produits.get(Code=request.POST.get('produit_nom'))
         quantite = int(request.POST.get('quantite'))
         prix_unitaire = float(request.POST.get('prix_unitaire'))
+        montant_verse  = float(request.POST.get('montant_verse'))
         
 
         # Calcul du montant total de l'achat
         montant_achat = quantite * prix_unitaire
-
+        sld= montant_achat - montant_verse 
         # Création d'une entrée dans la table Achats
         nouvel_achat = Achats(
-            DateA = date.today(),
+            Date = date.today(),
             prd=produit,
             frn= fournisseur,
-            Montant=montant_achat,
+            Montant = prix_unitaire,
             StatutP='En attente',  # Vous pouvez ajuster le statut selon vos besoins
-            quantiteA=quantite
+            quantite=quantite,
+            Solde = sld
         )
         nouvel_achat.save()
 
@@ -84,7 +85,15 @@ def fournisseur_form_view(request):
         form = FournisseurForm()
     return render(request, 'creerFournisseur.html', {'form': form})
 
-
+def transfer_form_view(request):
+    if request.method == 'POST':
+        form = TransfertMatieresForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('stock')  
+    else:
+        form = TransfertMatieresForm()
+    return render(request, 'transfer.html', {'form': form})
 
 class ProduitViewSet(viewsets.ModelViewSet):
     queryset = Produit.objects.all()

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Transfert de Matières</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Transfert de Matières</h1>
+      <hr />
+      <form method="post">
+        {% csrf_token %} {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">
+          Enregistrer le transfert
+        </button>
+      </form>
+    </div>
+  </body>
+</html>
